@@ -14,7 +14,6 @@ var connection = mysql.createConnection({
 connection.connect(function(err){
     if (err) throw err;
     console.log("Connected to id: ", connection.threadId);
-    // connection.end();
     start();
 });
 
@@ -54,9 +53,9 @@ function start(){
 
 function viewProducts(){
     connection.query("SELECT * FROM products", function (err, res) {
-         console.table(res)
-        
-        "\n"
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+         console.table(res);
+        "\n";
         start();
      }) 
 };
@@ -70,6 +69,7 @@ function lowInventory(){
             ${res[i].item_id}) ${res[i].product_name} - ${res[i].department_name} - Price: ${res[i].price} - Quantity: ${res[i].stock_quantity}` )
            }
            "\n"
+           console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
            start();
     })
 };
@@ -78,9 +78,9 @@ function addInventory() {
     inquirer
     .prompt([
         {
-            name:"product_name",
+            name:"item_id",
             type: "input",
-            message: "What product would you like to update?"
+            message: "What is the item id of the product would you like to update?"
         },
         {
             name: "stock_quantity",
@@ -101,13 +101,13 @@ function addInventory() {
           stock_quantity: answer.stock_quantity
         },
         {
-          product_name: answer.product_name
+          item_id: answer.item_id
         }
       ],
       function(err, res) {
         if (err) throw err;
-        console.log(answer.product_name + " updated!\n");
-        "\n"
+        console.log(`Item updated! 
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`);
         start();
       }
     )
@@ -160,8 +160,8 @@ function addProduct(){
           },
           function(err) {
             if (err) throw err;
-            console.log("Your product was added successfully!");
-            "\n"
+            console.log(`Your product was added successfully!
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`);
             start();
           }
         );

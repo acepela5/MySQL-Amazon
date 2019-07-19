@@ -19,7 +19,7 @@ connection.connect(function (err) {
 });
 
 function displayProducts(){
-   connection.query("SELECT item_id, product_name, price FROM products", function (err, res) {3
+   connection.query("SELECT item_id, product_name, price FROM products", function (err, res) {
        console.table(res)
        purchaseProduct()
     })
@@ -32,14 +32,14 @@ function purchaseProduct() {
                     name: "item_id",
                     type: "number",
                     message: "Enter the ID number of the product you would like to purchase.",
-                    // validate: function (value) {
-                    //     if (isNan(value)) {
-                    //         return false
-                    //     }
-                    //     else {
-                    //         return true
-                    //     }
-                    // }
+                    validate: function (value) {
+                        if (isNaN(value)) {
+                            return false
+                        }
+                        else {
+                            return true
+                        }
+                    }
                 },
                 {
                     name: "howMany",
@@ -50,10 +50,12 @@ function purchaseProduct() {
 
                 connection.query(`SELECT * FROM products where item_id=${parseInt(answer.item_id)}`, function(err,res){
                 var chosenItem = res[0]
-               
                 console.log(
-`Item Id: ${answer.item_id} 
-Product: ${chosenItem.product_name}`)
+`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Item Id: ${answer.item_id} 
+Product: ${chosenItem.product_name}
+Number of Product: ${answer.howMany}`)
+
                 if (chosenItem.stock_quantity >= parseInt(answer.howMany)) {
                   
                     var newQ = chosenItem.stock_quantity - parseInt(answer.howMany)
@@ -63,7 +65,6 @@ Product: ${chosenItem.product_name}`)
                        
                         function (err) {
                             if (err) throw err;
-                            console.log(err)
                         }
                     );
                     console.log("Total is: " + (parseInt(answer.howMany)*parseFloat(chosenItem.price)))
