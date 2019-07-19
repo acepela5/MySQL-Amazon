@@ -16,7 +16,7 @@ In the manager's view, user is able to see all of the product information includ
 ## Screenshot
 ---
 
-![](/Screenshot(2).png)
+![ ](./Screenshot(2).png)
 
 ## Link to Demo Video
 ---
