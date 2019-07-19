@@ -1,5 +1,7 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+const cTable = require('console.table');
+
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -39,6 +41,7 @@ function start(){
             break;
         case "Add to Inventory":
             addInventory();
+            break;
         case "Add New Product":
             addProduct();
             break;
@@ -51,11 +54,8 @@ function start(){
 
 function viewProducts(){
     connection.query("SELECT * FROM products", function (err, res) {
-        for (var i=0; i < res.length; i++){
-         
-         console.log(`
-         ${res[i].item_id} ${res[i].product_name} ${res[i].department_name} Price: ${res[i].price} Quantity: ${res[i].stock_quantity}` )
-        }
+         console.table(res)
+        
         "\n"
         start();
      }) 
@@ -63,10 +63,11 @@ function viewProducts(){
 
 function lowInventory(){
     connection.query("SELECT * FROM products WHERE stock_quantity < 5", function (err,res){
+        if (err) throw err;
         for (var i=0; i < res.length; i++){
          
             console.log(`
-            ${res[i].item_id} ${res[i].product_name} ${res[i].department_name} Price: ${res[i].price} Quantity: ${res[i].stock_quantity}` )
+            ${res[i].item_id}) ${res[i].product_name} - ${res[i].department_name} - Price: ${res[i].price} - Quantity: ${res[i].stock_quantity}` )
            }
            "\n"
            start();
@@ -105,7 +106,7 @@ function addInventory() {
       ],
       function(err, res) {
         if (err) throw err;
-        console.log(res.product_name + " updated!\n");
+        console.log(answer.product_name + " updated!\n");
         "\n"
         start();
       }
